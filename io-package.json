@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "admin-nexowatt",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "title": "NexoWatt EMS",
     "titleLang": {
       "en": "NexoWatt EMS",
@@ -11,6 +11,10 @@
       "0.1.0": {
         "en": "New: standalone proxy on its own port that injects NexoWatt theme over Admin UI.",
         "de": "Neu: Eigener Proxy auf eigenem Port, der das NexoWatt-Theme in die Admin-UI injiziert."
+      },
+      "0.1.1": {
+        "en": "Bind to 0.0.0.0 and add connectivity fallback if Admin isn't on 127.0.0.1.",
+        "de": "Bind an 0.0.0.0 und Fallback, falls Admin nicht auf 127.0.0.1 erreichbar ist."
       }
     },
     "license": "MIT",
