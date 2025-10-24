@@ -1,0 +1,22 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+package-lock.json
+pnpm-lock.yaml
+dist/
+build/
+.cache/
+.tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# ioBroker artifacts
+iobroker-data/
+iobroker/

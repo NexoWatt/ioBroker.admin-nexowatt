@@ -1,0 +1,19 @@
+{
+  "common": {
+    "name": "admin-nexowatt",
+    "version": "0.0.1",
+    "title": "NexoWatt EMS",
+    "news": {
+      "0.0.1": {
+        "en": "initial release of NexoWatt EMS theme"
+      }
+    },
+    "license": "MIT",
+    "authors": ["NexoWatt"],
+    "platform": "Javascript/Node.js",
+    "icon": "img/logo.png",
+    "enabled": true
+  },
+  "native": {},
+  "objects": []
+}

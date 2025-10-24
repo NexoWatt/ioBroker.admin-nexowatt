@@ -1,0 +1,24 @@
+:root {
+  --primary-color: #006b3c;
+  --background-color: #101820;
+  --text-color: #ffffff;
+}
+
+body, #app {
+  background-color: var(--background-color) !important;
+  color: var(--text-color) !important;
+}
+
+.admin-appbar {
+  background-color: var(--primary-color) !important;
+}
+
+.admin-sidebar {
+  background-color: #0d2618 !important;
+}
+
+button {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+}
