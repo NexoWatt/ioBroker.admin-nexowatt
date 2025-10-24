@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "admin-nexowatt",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "title": "NexoWatt EMS",
     "titleLang": {
       "en": "NexoWatt EMS",
@@ -15,6 +15,10 @@
       "0.1.1": {
         "en": "Bind to 0.0.0.0 and add connectivity fallback if Admin isn't on 127.0.0.1.",
         "de": "Bind an 0.0.0.0 und Fallback, falls Admin nicht auf 127.0.0.1 erreichbar ist."
+      },
+      "0.1.2": {
+        "en": "Add Admin 7 configuration UI (jsonConfig.json) so instance settings open and you can change ports.",
+        "de": "Admin-7-Konfiguration (jsonConfig.json) hinzugef\u00fcgt, damit Instanzeinstellungen ge\u00f6ffnet werden und der Port ge\u00e4ndert werden kann."
       }
     },
     "license": "MIT",
@@ -29,7 +33,10 @@
     "type": "visualization",
     "loglevel": "info",
     "connectionType": "local",
-    "dataSource": "push"
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    }
   },
   "native": {
     "port": 8181,
