@@ -1,6 +1,6 @@
 {
   "name": "iobroker.admin-nexowatt",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "title": "NexoWatt EMS",
   "main": "main.js",
   "keywords": [
@@ -11,7 +11,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@iobroker/adapter-core": "^3.1.4"
+    "@iobroker/adapter-core": "^3.1.4",
+    "http-proxy": "^1.18.1"
   },
   "engines": {
     "node": ">=16"

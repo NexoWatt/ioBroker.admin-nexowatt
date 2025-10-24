@@ -1,24 +1,16 @@
 {
   "common": {
     "name": "admin-nexowatt",
-    "version": "0.0.3",
+    "version": "0.1.0",
     "title": "NexoWatt EMS",
     "titleLang": {
       "en": "NexoWatt EMS",
       "de": "NexoWatt EMS"
     },
     "news": {
-      "0.0.3": {
-        "en": "Deploy theme to admin.themes (Admin 7+) and legacy admin/themes, auto-select theme.",
-        "de": "Theme nach admin.themes (Admin 7+) und legacy admin/themes kopiert, Theme automatisch setzen."
-      },
-      "0.0.2": {
-        "en": "Fix: define adapter mode to avoid 'invalid mode undefined'",
-        "de": "Fix: Adapter-Modus definiert, um 'invalid mode undefined' zu vermeiden"
-      },
-      "0.0.1": {
-        "en": "Initial release of NexoWatt EMS theme",
-        "de": "Erste Version"
+      "0.1.0": {
+        "en": "New: standalone proxy on its own port that injects NexoWatt theme over Admin UI.",
+        "de": "Neu: Eigener Proxy auf eigenem Port, der das NexoWatt-Theme in die Admin-UI injiziert."
       }
     },
     "license": "MIT",
@@ -31,12 +23,15 @@
     "mode": "daemon",
     "compact": true,
     "type": "visualization",
-    "materialize": true,
     "loglevel": "info",
     "connectionType": "local",
     "dataSource": "push"
   },
-  "native": {},
+  "native": {
+    "port": 8181,
+    "adminHost": "127.0.0.1",
+    "adminPort": 8081
+  },
   "objects": [],
   "instanceObjects": []
 }

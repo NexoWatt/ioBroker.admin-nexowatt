@@ -1,82 +1,105 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const utils = require('@iobroker/adapter-core');
+const http = require('http');
+const { createProxyServer } = require('http-proxy');
+const { readFileSync, existsSync } = require('fs');
+const path = require('path');
 
 class AdminNexowatt extends utils.Adapter {
   constructor(options) {
-    super({
-      ...options,
-      name: 'admin-nexowatt',
-    });
+    super({ ...options, name: 'admin-nexowatt' });
+    this.server = null;
+    this.proxy = null;
   }
 
   async onReady() {
     try {
-      const filesToCopy = [
-        { src: path.join(__dirname, 'admin', 'nexowatt.css'), rel: 'nexowatt/nexowatt.css' },
-        { src: path.join(__dirname, 'admin', 'nexowatt.js'),  rel: 'nexowatt/nexowatt.js'  },
-        { src: path.join(__dirname, 'admin', 'index_m.html'), rel: 'nexowatt/index_m.html' },
-        { src: path.join(__dirname, 'admin', 'img', 'logo.png'), rel: 'nexowatt/img/logo.png' },
-      ];
+      const adminHost = this.config.adminHost || '127.0.0.1';
+      const adminPort = this.config.adminPort || 8081;
+      const port = this.config.port || 8181;
 
-      // 1) Preferred (Admin >=7): write into "admin.themes" filespace
-      try {
-        await this.mkdirAsync('admin.themes', 'nexowatt');
-        await this.mkdirAsync('admin.themes', 'nexowatt/img');
-        for (const f of filesToCopy) {
-          const buf = fs.readFileSync(f.src);
-          await this.writeFileAsync('admin.themes', f.rel, buf);
-          this.log.info(`Deployed to admin.themes: ${f.rel}`);
-        }
-      } catch (e) {
-        this.log.warn(`admin.themes not available or write failed: ${e.message}`);
-      }
+      // Simple assets handler
+      const assets = {
+        css: readFileSync(path.join(__dirname, 'admin', 'nexowatt.css')),
+        js: readFileSync(path.join(__dirname, 'admin', 'nexowatt.js')),
+        logo: existsSync(path.join(__dirname, 'admin', 'img', 'logo.png'))
+          ? readFileSync(path.join(__dirname, 'admin', 'img', 'logo.png'))
+          : null,
+      };
 
-      // 2) Legacy fallback (Admin <=6): write into "admin" filespace under themes/
-      try {
-        await this.mkdirAsync('admin', 'themes/nexowatt');
-        await this.mkdirAsync('admin', 'themes/nexowatt/img');
-        for (const f of filesToCopy) {
-          const buf = fs.readFileSync(f.src);
-          await this.writeFileAsync('admin', `themes/${f.rel}`, buf);
-          this.log.info(`Deployed to admin (legacy): themes/${f.rel}`);
-        }
-      } catch (e) {
-        this.log.warn(`Legacy admin themes write failed: ${e.message}`);
-      }
+      this.proxy = createProxyServer({
+        target: { host: adminHost, port: adminPort },
+        selfHandleResponse: true,
+        changeOrigin: true,
+      });
 
-      // Try to set theme in admin config for both potential keys
-      const adminInstanceId = 'system.adapter.admin.0';
-      try {
-        const obj = await this.getForeignObjectAsync(adminInstanceId);
-        if (obj && obj.native) {
-          let changed = false;
-          if (obj.native.theme !== 'nexowatt') {
-            obj.native.theme = 'nexowatt';
-            changed = true;
-          }
-          if (obj.native.themeName !== 'nexowatt') {
-            obj.native.themeName = 'nexowatt';
-            changed = true;
-          }
-          if (changed) {
-            await this.setForeignObjectAsync(adminInstanceId, obj);
-            this.log.info('Configured Admin to use theme "nexowatt". A restart of admin may be required.');
+      this.proxy.on('error', (err, req, res) => {
+        this.log.error(`Proxy error: ${err.message}`);
+        if (!res.headersSent) res.writeHead(502, { 'Content-Type': 'text/plain' });
+        res.end('NexoWatt proxy could not reach ioBroker Admin.');
+      });
+
+      // Intercept responses to inject CSS/JS into main HTML document(s)
+      this.proxy.on('proxyRes', (proxyRes, req, res) => {
+        const contentType = proxyRes.headers['content-type'] || '';
+        const chunks = [];
+        proxyRes.on('data', (chunk) => chunks.push(chunk));
+        proxyRes.on('end', () => {
+          const buffer = Buffer.concat(chunks);
+          if (contentType.includes('text/html')) {
+            let html = buffer.toString('utf8');
+            // Inject our overlay assets before closing </head>
+            const injectTag = `\n<link rel="stylesheet" href="/__nexowatt__/nexowatt.css" />\n<script src="/__nexowatt__/nexowatt.js"></script>\n`;
+            html = html.replace('</head>', `${injectTag}</head>`);
+            res.writeHead(proxyRes.statusCode || 200, proxyRes.headers);
+            res.end(html);
           } else {
-            this.log.info('Admin already configured to theme "nexowatt".');
+            res.writeHead(proxyRes.statusCode || 200, proxyRes.headers);
+            res.end(buffer);
           }
-        } else {
-          this.log.warn('Could not read admin.0 object to set theme automatically.');
-        }
-      } catch (e) {
-        this.log.warn(`Failed to set Admin theme automatically: ${e.message}`);
-      }
+        });
+      });
 
-      this.log.info('NexoWatt EMS theme deployment finished.');
+      this.server = http.createServer((req, res) => {
+        // Serve overlay assets under a dedicated path
+        if (req.url.startsWith('/__nexowatt__/')) {
+          if (req.url.endsWith('nexowatt.css')) {
+            res.writeHead(200, { 'Content-Type': 'text/css' });
+            return res.end(assets.css);
+          }
+          if (req.url.endsWith('nexowatt.js')) {
+            res.writeHead(200, { 'Content-Type': 'application/javascript' });
+            return res.end(assets.js);
+          }
+          if (req.url.includes('/img/logo.png') && assets.logo) {
+            res.writeHead(200, { 'Content-Type': 'image/png' });
+            return res.end(assets.logo);
+          }
+          res.writeHead(404); return res.end('not found');
+        }
+        // Otherwise proxy to Admin
+        this.proxy.web(req, res);
+      });
+
+      this.server.listen(port, () => {
+        this.log.info(`NexoWatt EMS proxy running on http://0.0.0.0:${port} -> Admin at ${adminHost}:${adminPort}`);
+      });
+
     } catch (e) {
-      this.log.error(`Unexpected error: ${e.message}`);
+      this.log.error(`onReady error: ${e.message}`);
+    }
+  }
+
+  onUnload(callback) {
+    try {
+      if (this.server) {
+        this.server.close(() => this.log.info('NexoWatt proxy stopped.'));
+      }
+      if (this.proxy) this.proxy.close();
+      callback();
+    } catch (e) {
+      callback();
     }
   }
 }

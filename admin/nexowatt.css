@@ -1,1 +1,17 @@
-:root{--primary-color:#006b3c;}
+:root {
+  --primary-color: #006b3c;
+  --nw-bg: #101820;
+  --nw-text: #ffffff;
+}
+/* App background and text */
+body { background-color: var(--nw-bg) !important; color: var(--nw-text) !important; }
+/* Header / top bar */
+header, .MuiAppBar-root, .admin-appbar { background: var(--primary-color) !important; }
+/* Sidebar */
+.MuiDrawer-paper, .admin-sidebar { background: #0d2618 !important; }
+/* Buttons */
+button, .MuiButton-root { background: var(--primary-color) !important; color: #fff !important; border-radius: 8px !important; }
+/* Logo badge */
+#nexowatt-badge { position: fixed; top: 10px; left: 64px; display: flex; align-items: center; gap: 8px; z-index: 9999; }
+#nexowatt-badge img { height: 28px; }
+#nexowatt-badge span { font-weight: 600; color: #e8f5e9; }
