@@ -1,12 +1,26 @@
 {
   "name": "iobroker.admin-nexowatt",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "title": "NexoWatt EMS",
   "main": "main.js",
-  "type": "adapter",
-  "adminUI": {
-    "custom": true
+  "keywords": [
+    "iobroker",
+    "admin",
+    "theme",
+    "nexowatt"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.1.4"
   },
-  "keywords": ["iobroker", "admin", "theme", "nexowatt"],
-  "license": "MIT"
+  "engines": {
+    "node": ">=16"
+  },
+  "files": [
+    "admin/",
+    "main.js",
+    "io-package.json",
+    "README.md",
+    "LICENSE"
+  ]
 }
