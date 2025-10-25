@@ -1,26 +1,8 @@
 {
   "common": {
     "name": "admin-nexowatt",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "title": "NexoWatt EMS",
-    "titleLang": {
-      "en": "NexoWatt EMS",
-      "de": "NexoWatt EMS"
-    },
-    "news": {
-      "0.1.0": {
-        "en": "New: standalone proxy on its own port that injects NexoWatt theme over Admin UI.",
-        "de": "Neu: Eigener Proxy auf eigenem Port, der das NexoWatt-Theme in die Admin-UI injiziert."
-      },
-      "0.1.1": {
-        "en": "Bind to 0.0.0.0 and add connectivity fallback if Admin isn't on 127.0.0.1.",
-        "de": "Bind an 0.0.0.0 und Fallback, falls Admin nicht auf 127.0.0.1 erreichbar ist."
-      },
-      "0.1.2": {
-        "en": "Add Admin 7 configuration UI (jsonConfig.json) so instance settings open and you can change ports.",
-        "de": "Admin-7-Konfiguration (jsonConfig.json) hinzugef\u00fcgt, damit Instanzeinstellungen ge\u00f6ffnet werden und der Port ge\u00e4ndert werden kann."
-      }
-    },
     "license": "MIT",
     "authors": [
       "NexoWatt"
@@ -31,9 +13,12 @@
     "mode": "daemon",
     "compact": true,
     "type": "visualization",
-    "loglevel": "info",
-    "connectionType": "local",
-    "dataSource": "push",
+    "news": {
+      "0.1.3": {
+        "en": "Node 22+ compatibility: keep-alive + better logs",
+        "de": "Kompatibilit\u00e4t Node 22+: Keep-Alive + bessere Logs"
+      }
+    },
     "adminUI": {
       "config": "json"
     }

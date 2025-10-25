@@ -9,8 +9,6 @@
           "type": "number",
           "label": "Proxy Port",
           "attr": "port",
-          "min": 1,
-          "max": 65535,
           "default": 8181
         },
         {
@@ -23,8 +21,6 @@
           "type": "number",
           "label": "Admin Port",
           "attr": "adminPort",
-          "min": 1,
-          "max": 65535,
           "default": 8081
         }
       ]
