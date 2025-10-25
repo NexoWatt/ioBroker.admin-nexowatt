@@ -1,29 +1,17 @@
 {
-  "type": "tabs",
+  "type": "panel",
   "items": [
     {
-      "type": "panel",
-      "label": "NexoWatt EMS",
-      "items": [
-        {
-          "type": "number",
-          "label": "Proxy Port",
-          "attr": "port",
-          "default": 8181
-        },
-        {
-          "type": "text",
-          "label": "Admin Host",
-          "attr": "adminHost",
-          "default": "127.0.0.1"
-        },
-        {
-          "type": "number",
-          "label": "Admin Port",
-          "attr": "adminPort",
-          "default": 8081
-        }
-      ]
+      "type": "checkbox",
+      "label": "Auto-apply theme to Admin",
+      "attr": "autoApplyTheme",
+      "default": true
+    },
+    {
+      "type": "text",
+      "label": "Theme name",
+      "attr": "themeName",
+      "default": "nexowatt"
     }
   ]
 }

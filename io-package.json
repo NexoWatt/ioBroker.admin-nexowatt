@@ -1,8 +1,18 @@
 {
   "common": {
     "name": "admin-nexowatt",
-    "version": "0.1.3",
+    "version": "0.0.4",
     "title": "NexoWatt EMS",
+    "titleLang": {
+      "en": "NexoWatt EMS",
+      "de": "NexoWatt EMS"
+    },
+    "news": {
+      "0.0.4": {
+        "en": "Theme-only adapter: deploys files to admin.themes/nexowatt and auto-selects theme for Admin 7+.",
+        "de": "Reiner Theme-Adapter: kopiert Dateien nach admin.themes/nexowatt und setzt das Theme automatisch f\u00fcr Admin 7+."
+      }
+    },
     "license": "MIT",
     "authors": [
       "NexoWatt"
@@ -13,20 +23,16 @@
     "mode": "daemon",
     "compact": true,
     "type": "visualization",
-    "news": {
-      "0.1.3": {
-        "en": "Node 22+ compatibility: keep-alive + better logs",
-        "de": "Kompatibilit\u00e4t Node 22+: Keep-Alive + bessere Logs"
-      }
-    },
+    "loglevel": "info",
+    "connectionType": "local",
+    "dataSource": "push",
     "adminUI": {
       "config": "json"
     }
   },
   "native": {
-    "port": 8181,
-    "adminHost": "127.0.0.1",
-    "adminPort": 8081
+    "autoApplyTheme": true,
+    "themeName": "nexowatt"
   },
   "objects": [],
   "instanceObjects": []

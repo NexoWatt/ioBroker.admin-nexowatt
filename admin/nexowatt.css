@@ -1,1 +1,17 @@
-/* real CSS is served from memory in this version */
+:root{
+  --primary-color:#006b3c;
+  --background-color:#101820;
+  --text-color:#e8f5e9;
+}
+/* Global */
+html, body, #app { background-color: var(--background-color) !important; color: var(--text-color) !important; }
+/* Header/AppBar */
+.MuiAppBar-root, .admin-appbar { background-color: var(--primary-color) !important; }
+/* Sidebar */
+.MuiDrawer-paper, .admin-sidebar { background-color: #0d2618 !important; }
+/* Buttons */
+.MuiButton-root, button { background-color: var(--primary-color) !important; color: #fff !important; border-radius: 8px !important; }
+/* Logo placement */
+#nexowatt-badge { position: fixed; top: 10px; left: 64px; display: flex; align-items: center; gap: 8px; z-index: 9999; }
+#nexowatt-badge img { height: 28px; }
+#nexowatt-badge span { font-weight: 600; color: #c8f7dc; }

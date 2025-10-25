@@ -1,14 +1,15 @@
+# ioBroker.admin-nexowatt — NexoWatt EMS (Theme-only)
 
-# ioBroker.admin-nexowatt — NexoWatt EMS (Standalone Proxy)
+Deploys a dark-green NexoWatt theme to ioBroker Admin (Admin 7+: `admin.themes/nexowatt`).
 
-This adapter runs a small HTTP proxy on its own port (default **8181**) and injects
-NexoWatt dark-green styling into the ioBroker Admin UI (default at **8081**).
+## Install
+```bash
+iobroker stop admin-nexowatt
+iobroker url /path/to/iobroker.admin-nexowatt-0.0.4.zip
+iobroker upload admin-nexowatt
+iobroker restart admin
+```
+Then in Admin → Settings → Theme select **nexowatt** (if not auto-applied).
 
-## Usage
-- Open: `http://<host>:8181` (not 8081)
-- The proxy forwards to Admin and injects `/__nexowatt__/nexowatt.css` and `nexowatt.js`
-
-## Config (instance settings)
-- `port`: external port for this theme proxy (default 8181)
-- `adminHost`: Admin host (default 127.0.0.1)
-- `adminPort`: Admin port (default 8081)
+## Replace Logo
+Upload your logo to: `/opt/iobroker/iobroker-data/files/admin.themes/nexowatt/img/logo.png`
